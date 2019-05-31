@@ -31,6 +31,7 @@ public class BannerTest {
 
         public void test(){
             System.out.println(123456);
+            System.out.println("asdasdasd");
         }
 
 }
