@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.dao.ChapterDao">
+    <resultMap id="BaseResultMap" type="com.baizhi.entity.Chapter">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="size" jdbcType="DOUBLE" property="size"/>
+        <result column="duration" jdbcType="DOUBLE" property="duration"/>
+        <result column="audio" jdbcType="VARCHAR" property="audio"/>
+        <result column="albumid" jdbcType="VARCHAR" property="albumid"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, title, size, duration, audio, albumid
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from chapter
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from chapter
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.baizhi.entity.Chapter">
+        insert into chapter (id, title, size,
+        duration, audio, albumid
+        )
+        values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{size,jdbcType=DOUBLE},
+        #{duration,jdbcType=DOUBLE}, #{audio,jdbcType=VARCHAR}, #{albumid,jdbcType=VARCHAR}
+        )
+    </insert>
+
+
+    <insert id="insertSelective" parameterType="com.baizhi.entity.Chapter">
+        insert into chapter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id=#{id}
+            </if>
+            <if test="title != null">
+                title=#{title}
+            </if>
+            <if test="size != null">
+                size=#{size}
+            </if>
+            <if test="duration != null">
+                duration=#{duration}
+            </if>
+            <if test="audio != null">
+                audio=#{audio}
+            </if>
+            <if test="albumid != null">
+                albumid=#{albumid}
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null">
+                #{size,jdbcType=DOUBLE},
+            </if>
+            <if test="duration != null">
+                #{duration,jdbcType=DOUBLE},
+            </if>
+            <if test="audio != null">
+                #{audio,jdbcType=VARCHAR},
+            </if>
+            <if test="albumid != null">
+                #{albumid,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.baizhi.entity.Chapter">
+        update chapter
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="size != null">
+                size = #{size,jdbcType=DOUBLE},
+            </if>
+            <if test="duration != null">
+                duration = #{duration,jdbcType=DOUBLE},
+            </if>
+            <if test="audio != null">
+                audio = #{audio,jdbcType=VARCHAR},
+            </if>
+            <if test="albumid != null">
+                albumid = #{albumid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.baizhi.entity.Chapter">
+        update chapter
+        set title = #{title,jdbcType=VARCHAR},
+        size = #{size,jdbcType=DOUBLE},
+        duration = #{duration,jdbcType=DOUBLE},
+        audio = #{audio,jdbcType=VARCHAR},
+        albumid = #{albumid,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select * from chapter
+        where albumid=#{albumid}
+        limit ${(page-1)*rows}, #{rows}
+    </select>
+
+    <select id="queryCount" resultType="Integer">
+        select count(*) from chapter where albumid=#{albumid}
+    </select>
+
+    <update id="updateTitle">
+        update chapter set title=#{title} where id=#{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.dao.BannerDao">
+    <resultMap id="BaseResultMap" type="com.baizhi.entity.Banner">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="img_pic" jdbcType="VARCHAR" property="imgPic"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="create_date" jdbcType="DATE" property="createDate"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.baizhi.entity.Banner">
+        insert into banner (id, title, img_pic,
+        status, create_date, description
+        )
+        values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{imgPic,jdbcType=VARCHAR},
+        #{status,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, #{description,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.baizhi.entity.Banner">
+        insert into banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="imgPic != null">
+                img_pic,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="imgPic != null">
+                #{imgPic,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select * from banner
+    </select>
+
+    <select id="queryCount" resultType="Integer">
+        select count(*) from banner
+    </select>
+
+    <select id="querySome" resultMap="BaseResultMap">
+        select * from banner limit ${(page-1)*rows},#{rows}
+    </select>
+
+    <update id="update">
+        update banner set img_pic=#{path} where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete from banner where id in
+        <foreach collection="ids" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <update id="updateall">
+        update banner
+        <set>
+            <if test="title!=null">
+                title=#{title},
+            </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
+            <if test="description!=null">
+                description=#{description}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>
